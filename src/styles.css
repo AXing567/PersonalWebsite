@@ -3786,7 +3786,7 @@ li + li {
 
 .admin-visit-filters {
   display: grid;
-  grid-template-columns: minmax(150px, 0.9fr) minmax(130px, 0.7fr) minmax(170px, 0.9fr) minmax(220px, 1.25fr) auto;
+  grid-template-columns: minmax(120px, 0.7fr) minmax(150px, 0.9fr) minmax(130px, 0.7fr) minmax(170px, 0.9fr) minmax(220px, 1.25fr) auto;
   gap: 12px;
   align-items: end;
   border-bottom: 1px solid rgba(207, 233, 255, 0.1);

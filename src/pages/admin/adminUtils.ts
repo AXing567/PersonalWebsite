@@ -10,12 +10,14 @@ export type ArticleFormState = {
 };
 
 export type VisitStatusFilter = "all" | "offline" | "online";
+export type VisitTimeWindow = "7d" | "15d" | "30d" | "all";
 
 export type VisitFilters = {
   ipQuery: string;
   page: string;
   region: string;
   status: VisitStatusFilter;
+  timeWindow: VisitTimeWindow;
 };
 
 export const emptyDashboard: VisitDashboard = {
@@ -90,6 +92,34 @@ export const emptyVisitFilters: VisitFilters = {
   page: "all",
   region: "all",
   status: "all",
+  timeWindow: "all",
+};
+
+export const visitTimeWindowOptions: Array<{
+  label: string;
+  value: VisitTimeWindow;
+}> = [
+  { label: "近 7 天", value: "7d" },
+  { label: "近 15 天", value: "15d" },
+  { label: "近 30 天", value: "30d" },
+  { label: "全部", value: "all" },
+];
+
+const visitWindowDays: Record<Exclude<VisitTimeWindow, "all">, number> = {
+  "7d": 7,
+  "15d": 15,
+  "30d": 30,
+};
+
+export const filterVisitsByTimeWindow = (
+  visits: VisitDashboard["visits"],
+  timeWindow: VisitTimeWindow,
+  currentTime = Date.now(),
+) => {
+  if (timeWindow === "all") return visits;
+
+  const cutoff = currentTime - visitWindowDays[timeWindow] * 24 * 60 * 60 * 1000;
+  return visits.filter((visit) => visit.startedAt >= cutoff);
 };
 
 const routeNameMap: Record<string, string> = {

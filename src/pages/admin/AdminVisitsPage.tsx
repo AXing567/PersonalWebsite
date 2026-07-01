@@ -15,14 +15,17 @@ import {
   emptySettings,
   emptyVisitFilters,
   calculateVisitQualityStats,
+  filterVisitsByTimeWindow,
   formatGeoTitle,
   formatPageName,
   formatPercent,
   getAverageDuration,
   getPageTone,
   getVisitRegionLabel,
+  visitTimeWindowOptions,
   type VisitFilters,
   type VisitStatusFilter,
+  type VisitTimeWindow,
 } from "./adminUtils";
 
 const VISITS_PER_PAGE = 100;
@@ -40,7 +43,12 @@ export default function AdminVisitsPage() {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isSavingSettings, setIsSavingSettings] = useState(false);
 
-  const recentVisits = useMemo(() => dashboard.visits.slice(0, 80), [dashboard.visits]);
+  const windowedVisits = useMemo(
+    () => filterVisitsByTimeWindow(dashboard.visits, visitFilters.timeWindow, dashboard.generatedAt),
+    [dashboard.generatedAt, dashboard.visits, visitFilters.timeWindow],
+  );
+  const windowedActiveCount = useMemo(() => windowedVisits.filter((visit) => visit.isActive).length, [windowedVisits]);
+  const recentVisits = useMemo(() => windowedVisits.slice(0, 80), [windowedVisits]);
   const pageFilterOptions = useMemo(
     () =>
       Array.from(new Set(dashboard.visits.map((visit) => visit.page)))
@@ -52,10 +60,10 @@ export default function AdminVisitsPage() {
     () => Array.from(new Set(dashboard.visits.map(getVisitRegionLabel))).filter(Boolean).sort((left, right) => left.localeCompare(right, "zh-CN")),
     [dashboard.visits],
   );
-  const qualityStats = useMemo(() => calculateVisitQualityStats(dashboard.visits), [dashboard.visits]);
+  const qualityStats = useMemo(() => calculateVisitQualityStats(windowedVisits), [windowedVisits]);
   const pageOverview = useMemo(() => {
     const counts = new Map<string, { activeCount: number; durationMs: number; page: string; pageVisits: VisitDashboard["visits"]; visits: number }>();
-    dashboard.visits.forEach((visit) => {
+    windowedVisits.forEach((visit) => {
       const current = counts.get(visit.page) ?? {
         activeCount: 0,
         durationMs: 0,
@@ -78,7 +86,7 @@ export default function AdminVisitsPage() {
       quality: calculateVisitQualityStats(item.pageVisits, { volumeScore: Math.round((item.visits / maxVisits) * 100) }),
       percentage: Math.max(7, Math.round((item.visits / maxVisits) * 100)),
     }));
-  }, [dashboard.visits]);
+  }, [windowedVisits]);
   const topPage = pageOverview[0];
   const regionOverview = useMemo(() => {
     const counts = new Map<string, number>();
@@ -101,7 +109,7 @@ export default function AdminVisitsPage() {
   const filteredVisits = useMemo(() => {
     const query = visitFilters.ipQuery.trim().toLowerCase();
 
-    return dashboard.visits.filter((visit) => {
+    return windowedVisits.filter((visit) => {
       if (visitFilters.page !== "all" && visit.page !== visitFilters.page) return false;
       if (visitFilters.status === "online" && !visit.isActive) return false;
       if (visitFilters.status === "offline" && visit.isActive) return false;
@@ -115,7 +123,7 @@ export default function AdminVisitsPage() {
         .toLowerCase();
       return searchableText.includes(query);
     });
-  }, [dashboard.visits, visitFilters]);
+  }, [visitFilters, windowedVisits]);
   const visitTotalPages = Math.max(1, Math.ceil(filteredVisits.length / VISITS_PER_PAGE));
   const currentVisitPage = Math.min(visitPage, visitTotalPages);
   const pagedVisits = useMemo(() => {
@@ -125,7 +133,11 @@ export default function AdminVisitsPage() {
   const visitRangeStart = filteredVisits.length ? (currentVisitPage - 1) * VISITS_PER_PAGE + 1 : 0;
   const visitRangeEnd = filteredVisits.length ? visitRangeStart + pagedVisits.length - 1 : 0;
   const hasActiveVisitFilters =
-    visitFilters.page !== "all" || visitFilters.status !== "all" || visitFilters.region !== "all" || Boolean(visitFilters.ipQuery.trim());
+    visitFilters.timeWindow !== "all" ||
+    visitFilters.page !== "all" ||
+    visitFilters.status !== "all" ||
+    visitFilters.region !== "all" ||
+    Boolean(visitFilters.ipQuery.trim());
 
   const refreshDashboard = async () => {
     setIsRefreshing(true);
@@ -241,13 +253,13 @@ export default function AdminVisitsPage() {
       <section className="admin-metrics reveal delay-1" aria-label="访问概览">
         <article>
           <Eye size={18} />
-          <span>总访问</span>
-          <strong>{dashboard.totalVisits}</strong>
+          <span>窗口访问</span>
+          <strong>{windowedVisits.length}</strong>
         </article>
         <article>
           <Wifi size={18} />
           <span>当前在线</span>
-          <strong>{dashboard.activeCount}</strong>
+          <strong>{windowedActiveCount}</strong>
         </article>
         <article>
           <Clock3 size={18} />
@@ -401,10 +413,20 @@ export default function AdminVisitsPage() {
             <h2>访问记录</h2>
           </div>
           <strong>
-            {filteredVisits.length} / {dashboard.totalVisits} 条
+            {filteredVisits.length} / {windowedVisits.length} 条
           </strong>
         </div>
         <div className="admin-visit-filters" aria-label="访问记录筛选">
+          <label>
+            时间
+            <select value={visitFilters.timeWindow} onChange={(event) => updateVisitFilters({ timeWindow: event.target.value as VisitTimeWindow })}>
+              {visitTimeWindowOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </label>
           <label>
             页面
             <select value={visitFilters.page} onChange={(event) => updateVisitFilters({ page: event.target.value })}>
@@ -503,7 +525,7 @@ export default function AdminVisitsPage() {
         </div>
         <div className="admin-pagination" aria-label="访问记录分页">
           <span>
-            每页 {VISITS_PER_PAGE} 条 · 当前显示 {visitRangeStart}-{visitRangeEnd}
+            每页 {VISITS_PER_PAGE} 条 · 当前显示 {visitRangeStart}-{visitRangeEnd} · 全部记录 {dashboard.totalVisits} 条
           </span>
           <div>
             <button disabled={currentVisitPage <= 1} onClick={() => setVisitPage((current) => Math.max(1, current - 1))} type="button">
