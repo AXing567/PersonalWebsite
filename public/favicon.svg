@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Star">
+  <defs>
+    <linearGradient id="bg" x1="8" x2="56" y1="6" y2="58" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#12304a" />
+      <stop offset="0.5" stop-color="#07111f" />
+      <stop offset="1" stop-color="#14253d" />
+    </linearGradient>
+    <linearGradient id="star" x1="18" x2="46" y1="16" y2="49" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#a6f1ff" />
+      <stop offset="0.48" stop-color="#81ebcd" />
+      <stop offset="1" stop-color="#b9adff" />
+    </linearGradient>
+    <filter id="glow" x="-35%" y="-35%" width="170%" height="170%">
+      <feGaussianBlur stdDeviation="2.8" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="url(#bg)" />
+  <path d="M11 35.5C17 20 31 10.5 50 11" fill="none" stroke="#74d6ff" stroke-opacity="0.26" stroke-width="2" />
+  <path d="M14 49c11-2 24-10 37-28" fill="none" stroke="#81ebcd" stroke-opacity="0.22" stroke-width="2" />
+  <circle cx="49" cy="15" r="2.8" fill="#81ebcd" opacity="0.75" filter="url(#glow)" />
+  <path
+    d="M32 12.5l5.2 12.3 13.3 1.1-10.1 8.7 3 13-11.4-6.9-11.4 6.9 3-13-10.1-8.7 13.3-1.1L32 12.5Z"
+    fill="url(#star)"
+    filter="url(#glow)"
+  />
+  <path
+    d="M32 18.7l3.4 8.1 8.8.7-6.7 5.7 2 8.6-7.5-4.6-7.5 4.6 2-8.6-6.7-5.7 8.8-.7 3.4-8.1Z"
+    fill="#07111f"
+    opacity="0.28"
+  />
+</svg>

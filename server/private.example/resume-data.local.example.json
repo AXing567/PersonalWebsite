@@ -1,0 +1,25 @@
+{
+  "profile": {
+    "name": "Your Name",
+    "englishName": "Your English Name",
+    "title": "AI Full Stack Developer",
+    "current": "Current status",
+    "company": "Available",
+    "intent": "Target role",
+    "location": "City",
+    "phone": "000-0000-0000",
+    "email": "you@example.com",
+    "shortPitch": "Short personal positioning.",
+    "heroSummary": "Resume page summary."
+  },
+  "typingRoles": ["AI Full Stack Developer"],
+  "metrics": [{ "label": "Experience", "value": "1y+" }],
+  "experience": [],
+  "featuredProjects": [],
+  "skillGroups": [],
+  "capabilities": [],
+  "education": [],
+  "educationHonors": [],
+  "otherProjects": [],
+  "softStrengths": []
+}

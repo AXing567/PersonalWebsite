@@ -1,0 +1,35 @@
+{
+  "name": "personal-website-template",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "backup:local-data": "node scripts/backup-local-data.mjs",
+    "backup:vps-data": "node scripts/backup-vps-data.mjs",
+    "dev": "vite --host 0.0.0.0",
+    "build": "npm run typecheck && vite build",
+    "deploy:vps": "npm run backup:vps-data && node scripts/deploy-vps.mjs",
+    "typecheck": "tsc --noEmit",
+    "preview": "vite preview --host 0.0.0.0"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "latest",
+    "lucide-react": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "react-markdown": "^10.1.0",
+    "remark-gfm": "^4.0.1",
+    "typescript": "latest",
+    "vite": "latest"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.16",
+    "@types/react-dom": "^19.2.3",
+    "ssh2": "^1.17.0"
+  },
+  "description": "Configurable personal website with protected resume, AI avatar, admin analytics, articles, and private runtime file management.",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

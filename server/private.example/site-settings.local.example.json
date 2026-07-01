@@ -1,0 +1,20 @@
+{
+  "avatarKnowledgeMode": "full-context",
+  "excludedVisitIps": ["127.0.0.1"],
+  "publicProfile": {
+    "brandInitials": "YOU",
+    "browserTitle": "Your Personal Site",
+    "englishName": "Your English Name",
+    "heroPrimaryActionLabel": "View Resume",
+    "heroSecondaryActionLabel": "Chat with AI Avatar",
+    "heroSummary": "A concise homepage summary.",
+    "heroTitle": "Turn complex problems into useful tools.",
+    "metaDescription": "Personal website and AI avatar.",
+    "name": "Your Name",
+    "orbitLabel": "AI Tooling",
+    "roleTitle": "AI Native Builder"
+  },
+  "siteTheme": "aurora",
+  "showArticlesEntry": false,
+  "updatedAt": 0
+}
