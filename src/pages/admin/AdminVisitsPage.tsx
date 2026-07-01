@@ -25,7 +25,6 @@ import {
   visitTimeWindowOptions,
   type VisitFilters,
   type VisitStatusFilter,
-  type VisitTimeWindow,
 } from "./adminUtils";
 
 const VISITS_PER_PAGE = 100;
@@ -250,6 +249,29 @@ export default function AdminVisitsPage() {
 
       {error ? <div className="admin-error">{error}</div> : null}
 
+      <section className="admin-time-window-panel reveal delay-1" aria-label="访问时间窗口">
+        <div>
+          <span>
+            <Clock3 size={15} />
+            Time Window
+          </span>
+          <strong>统计范围</strong>
+        </div>
+        <div className="admin-segmented-control admin-time-window-control" role="group" aria-label="访问时间窗口">
+          {visitTimeWindowOptions.map((option) => (
+            <button
+              aria-pressed={visitFilters.timeWindow === option.value}
+              className={visitFilters.timeWindow === option.value ? "is-active" : ""}
+              key={option.value}
+              onClick={() => updateVisitFilters({ timeWindow: option.value })}
+              type="button"
+            >
+              {option.label}
+            </button>
+          ))}
+        </div>
+      </section>
+
       <section className="admin-metrics reveal delay-1" aria-label="访问概览">
         <article>
           <Eye size={18} />
@@ -417,16 +439,6 @@ export default function AdminVisitsPage() {
           </strong>
         </div>
         <div className="admin-visit-filters" aria-label="访问记录筛选">
-          <label>
-            时间
-            <select value={visitFilters.timeWindow} onChange={(event) => updateVisitFilters({ timeWindow: event.target.value as VisitTimeWindow })}>
-              {visitTimeWindowOptions.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-          </label>
           <label>
             页面
             <select value={visitFilters.page} onChange={(event) => updateVisitFilters({ page: event.target.value })}>

@@ -2361,6 +2361,48 @@ li + li {
   background: rgba(255, 80, 110, 0.09);
 }
 
+.admin-time-window-panel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 16px;
+  border: 1px solid rgba(207, 233, 255, 0.12);
+  border-radius: 8px;
+  padding: 14px;
+  background:
+    linear-gradient(135deg, rgba(116, 214, 255, 0.1), transparent 42%),
+    rgba(255, 255, 255, 0.046);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(18px);
+}
+
+.admin-time-window-panel > div:first-child {
+  display: grid;
+  gap: 6px;
+}
+
+.admin-time-window-panel span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--brand);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.admin-time-window-panel strong {
+  color: #fff;
+  font-size: 18px;
+}
+
+.admin-time-window-control {
+  grid-template-columns: repeat(4, minmax(82px, 1fr));
+  width: min(100%, 430px);
+}
+
 .admin-metrics {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -3786,7 +3828,7 @@ li + li {
 
 .admin-visit-filters {
   display: grid;
-  grid-template-columns: minmax(120px, 0.7fr) minmax(150px, 0.9fr) minmax(130px, 0.7fr) minmax(170px, 0.9fr) minmax(220px, 1.25fr) auto;
+  grid-template-columns: minmax(150px, 0.9fr) minmax(130px, 0.7fr) minmax(170px, 0.9fr) minmax(220px, 1.25fr) auto;
   gap: 12px;
   align-items: end;
   border-bottom: 1px solid rgba(207, 233, 255, 0.1);
@@ -5947,6 +5989,16 @@ button.download-link {
     align-items: flex-start;
     flex-direction: column;
     padding: 18px;
+  }
+
+  .admin-time-window-panel {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .admin-time-window-control {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
   }
 
   .admin-visit-filters {
