@@ -6,6 +6,7 @@ import {
   CloudCog,
   Cpu,
   Database,
+  ExternalLink,
   FileBraces,
   FileLock2,
   GitBranch,
@@ -68,6 +69,7 @@ const projectPoints: ProjectPoint[] = [
 ];
 
 const stackItems = ["Vite", "React", "TypeScript", "Hash Router", "Vite Middleware", "AI Avatar RAG"];
+const repositoryUrl = "https://github.com/AXing567/PersonalWebsite";
 
 const architectureNodes: ArchitectureNode[] = [
   {
@@ -189,6 +191,13 @@ export default function PersonalSiteProjectPage() {
           {stackItems.map((item) => (
             <span key={item}>{item}</span>
           ))}
+        </div>
+        <div className="project-repo-actions">
+          <a className="project-repo-link" href={repositoryUrl} rel="noreferrer" target="_blank">
+            <GitBranch size={18} />
+            <span>查看 GitHub 仓库</span>
+            <ExternalLink size={15} />
+          </a>
         </div>
       </section>
 

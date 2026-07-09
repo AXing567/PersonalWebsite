@@ -1148,6 +1148,41 @@ button {
   font-weight: 800;
 }
 
+.project-repo-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.project-repo-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 42px;
+  border: 1px solid rgba(101, 231, 199, 0.24);
+  border-radius: 8px;
+  padding: 0 14px;
+  color: #eafff9;
+  background:
+    linear-gradient(135deg, rgba(101, 231, 199, 0.15), rgba(116, 214, 255, 0.08)),
+    rgba(255, 255, 255, 0.052);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 14px 34px rgba(0, 0, 0, 0.16);
+  font-size: 14px;
+  font-weight: 900;
+  text-decoration: none;
+  transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+}
+
+.project-repo-link:hover {
+  border-color: rgba(101, 231, 199, 0.48);
+  background:
+    linear-gradient(135deg, rgba(101, 231, 199, 0.22), rgba(116, 214, 255, 0.12)),
+    rgba(255, 255, 255, 0.074);
+  transform: translateY(-1px);
+}
+
 .project-intro-overview {
   display: grid;
   gap: 14px;
