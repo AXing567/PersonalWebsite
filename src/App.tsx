@@ -10,6 +10,7 @@ import RouteLoader from "./components/RouteLoader";
 import { useScrollReveal } from "./hooks/useScrollReveal";
 import { useSiteTheme } from "./hooks/useSiteTheme";
 import { useVisitTracker } from "./hooks/useVisitTracker";
+import { fallbackPublicProfile, getPublicSiteSettings } from "./utils/adminAccess";
 
 const getRoute = () => window.location.hash.replace("#", "") || "/";
 const getRouteBase = (route: string) => route.split("?")[0] || "/";
@@ -40,6 +41,34 @@ export default function App() {
   useScrollReveal(routeBase);
   useSiteTheme();
   useVisitTracker(routeBase);
+
+  useEffect(() => {
+    let isActive = true;
+
+    const applyPublicMetadata = async () => {
+      try {
+        const settings = await getPublicSiteSettings();
+        if (!isActive) return;
+
+        const publicProfile = settings.publicProfile ?? fallbackPublicProfile;
+        document.title = publicProfile.browserTitle || fallbackPublicProfile.browserTitle;
+        document.querySelector('meta[name="description"]')?.setAttribute(
+          "content",
+          publicProfile.metaDescription || fallbackPublicProfile.metaDescription,
+        );
+      } catch {
+        if (!isActive) return;
+
+        document.title = fallbackPublicProfile.browserTitle;
+        document.querySelector('meta[name="description"]')?.setAttribute("content", fallbackPublicProfile.metaDescription);
+      }
+    };
+
+    void applyPublicMetadata();
+    return () => {
+      isActive = false;
+    };
+  }, []);
 
   useEffect(() => {
     const handleHashChange = () => {

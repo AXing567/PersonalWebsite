@@ -18,11 +18,6 @@ export default function HomePage() {
       if (isActive) {
         setPublicProfile(settings.publicProfile ?? fallbackPublicProfile);
         setShowArticlesEntry(settings.showArticlesEntry);
-        document.title = settings.publicProfile?.browserTitle || fallbackPublicProfile.browserTitle;
-        document.querySelector('meta[name="description"]')?.setAttribute(
-          "content",
-          settings.publicProfile?.metaDescription || fallbackPublicProfile.metaDescription,
-        );
       }
     };
 
